@@ -44,3 +44,28 @@ app.post('/addcar', async(req, res) => {
         res.status(500).json({ message: 'Server error - could not add'+car_name });
     }
 });
+
+app.post('/deletecar/:id', async(req, res) => {
+    const {id} = req.params;
+    try {
+        let connection = await mysql.createConnection(dbConfig);
+        await connection.execute('DELETE FROM cars WHERE id = ?', [id]);
+        res.status(201).json({message: 'Car     of ID'+id+' has been deleted successfully.'});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error - could not delete'+car_name });
+    }
+});
+
+app.post('/carupdate/:id', async(req, res) => {
+    const {car_name, car_pic} = req.body;
+    const {id} = req.params;
+    try {
+        let connection = await mysql.createConnection(dbConfig);
+        await connection.execute('UPDATE cars SET car_name = ?, car_pic = ? WHERE id = ?', [car_name, car_pic, id]);
+        res.status(201).json({message: car_name+' has been updated successfully.'});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error - could not update'+car_name });
+    }
+});
