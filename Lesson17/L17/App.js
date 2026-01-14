@@ -49,10 +49,11 @@ const App = () => {
             })
     }, []);
 
+    //function for search filter
     const FilterData = (text) => {
         if (text!='') {
             let myFilteredData = originalData.filter((item) =>
-            item.card_name.includes(text));
+            item.card_name.toLowerCase().includes(text.toLowerCase()));
             setMyData(myFilteredData);
         }
         else {
@@ -74,7 +75,9 @@ const App = () => {
         <View>
             <StatusBar/>
             <Text style={styles.searchLabel}>Search:</Text>
-            <TextInput style={styles.searchBar} onChangeText={(text) => {FilterData(text)}}/>
+            <TextInput
+                style={styles.searchBar}
+                onChangeText={(text) => {FilterData(text)}}/>
             <FlatList data={myData} renderItem={renderItem} />
         </View>
     );
